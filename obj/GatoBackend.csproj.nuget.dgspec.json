@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\victo\\Desktop\\GatoBackend\\GatoBackend.csproj": {}
+    "C:\\Users\\Jiesm\\Documents\\INFORMATICA\\SEMESTRE 6\\Programacion ambiente\\PROYECTOS\\GatoBackend\\GatoBackend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\victo\\Desktop\\GatoBackend\\GatoBackend.csproj": {
+    "C:\\Users\\Jiesm\\Documents\\INFORMATICA\\SEMESTRE 6\\Programacion ambiente\\PROYECTOS\\GatoBackend\\GatoBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\victo\\Desktop\\GatoBackend\\GatoBackend.csproj",
+        "projectUniqueName": "C:\\Users\\Jiesm\\Documents\\INFORMATICA\\SEMESTRE 6\\Programacion ambiente\\PROYECTOS\\GatoBackend\\GatoBackend.csproj",
         "projectName": "GatoBackend",
-        "projectPath": "C:\\Users\\victo\\Desktop\\GatoBackend\\GatoBackend.csproj",
-        "packagesPath": "C:\\Users\\victo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\victo\\Desktop\\GatoBackend\\obj\\",
+        "projectPath": "C:\\Users\\Jiesm\\Documents\\INFORMATICA\\SEMESTRE 6\\Programacion ambiente\\PROYECTOS\\GatoBackend\\GatoBackend.csproj",
+        "packagesPath": "C:\\Users\\Jiesm\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Jiesm\\Documents\\INFORMATICA\\SEMESTRE 6\\Programacion ambiente\\PROYECTOS\\GatoBackend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\victo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Jiesm\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"

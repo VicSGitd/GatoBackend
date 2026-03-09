@@ -57,3 +57,34 @@ C:\Users\victo\Desktop\GatoBackend\obj\Debug\net10.0\GatoBackend.genruntimeconfi
 C:\Users\victo\Desktop\GatoBackend\obj\Debug\net10.0\ref\GatoBackend.dll
 C:\Users\victo\Desktop\GatoBackend\bin\Debug\net10.0\GatoBackend.staticwebassets.runtime.json
 C:\Users\victo\Desktop\GatoBackend\obj\Debug\net10.0\compressed\wa5uilocq3-{0}-dgqsjnfyhu-dgqsjnfyhu.gz
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\bin\Debug\net10.0\appsettings.Development.json
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\bin\Debug\net10.0\appsettings.json
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\bin\Debug\net10.0\GatoBackend.staticwebassets.runtime.json
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\bin\Debug\net10.0\GatoBackend.staticwebassets.endpoints.json
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\bin\Debug\net10.0\GatoBackend.exe
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\bin\Debug\net10.0\GatoBackend.deps.json
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\bin\Debug\net10.0\GatoBackend.runtimeconfig.json
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\bin\Debug\net10.0\GatoBackend.dll
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\bin\Debug\net10.0\GatoBackend.pdb
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\rpswa.dswa.cache.json
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\GatoBackend.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\GatoBackend.AssemblyInfoInputs.cache
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\GatoBackend.AssemblyInfo.cs
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\GatoBackend.csproj.CoreCompileInputs.cache
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\GatoBackend.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\GatoBackend.sourcelink.json
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\rjimswa.dswa.cache.json
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\scopedcss\bundle\GatoBackend.styles.css
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\compressed\wa5uilocq3-{0}-dgqsjnfyhu-dgqsjnfyhu.gz
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\staticwebassets.build.json
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\staticwebassets.build.json.cache
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\staticwebassets.development.json
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\staticwebassets.build.endpoints.json
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\swae.build.ex.cache
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\GatoBackend.dll
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\refint\GatoBackend.dll
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\GatoBackend.pdb
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\GatoBackend.genruntimeconfig.cache
+C:\Users\Jiesm\Documents\INFORMATICA\SEMESTRE 6\Programacion ambiente\PROYECTOS\GatoBackend\obj\Debug\net10.0\ref\GatoBackend.dll
