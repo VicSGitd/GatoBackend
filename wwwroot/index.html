@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Prueba de SignalR - Gato</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+    <style> body { font-family: sans-serif; padding: 20px; } </style>
+</head>
+<body>
+    <h2>Test del Servidor - Gato</h2>
+    
+    <input type="text" id="playerName" placeholder="Escribe tu nombre..." />
+    <button onclick="buscarPartida()">1. Buscar Partida</button>
+    <button onclick="hacerMovimiento(0)">2. Tirar en posición 0</button>
+
+    <h3 id="status" style="color: blue;">Desconectado</h3>
+    <pre id="log" style="background: #eee; padding: 10px;"></pre>
+
+    <script>
+        // Variables globales para la prueba
+        let miRoomId = "";
+
+        // Conectar al Hub de SignalR
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/gamehub")
+            .build();
+
+        // --- ESCUCHAR EVENTOS DEL SERVIDOR ---
+
+        connection.on("WaitingForOpponent", () => {
+            document.getElementById("status").innerText = "Esperando a otro jugador...";
+        });
+
+        connection.on("GameStarted", (game) => {
+            miRoomId = game.roomId;
+            document.getElementById("status").innerText = "¡Juego Iniciado! Sala: " + game.roomId;
+            loguear("Juego iniciado: " + JSON.stringify(game, null, 2));
+        });
+
+        connection.on("UpdateBoard", (game) => {
+            loguear("Movimiento registrado: " + JSON.stringify(game.board, null, 2));
+            if(game.isGameOver) {
+                document.getElementById("status").innerText = "¡FIN DEL JUEGO! Ganador ID: " + game.winnerConnectionId;
+            }
+        });
+
+        // Iniciar conexión
+        connection.start()
+            .then(() => document.getElementById("status").innerText = "Conectado al servidor")
+            .catch(err => console.error(err));
+
+        // --- ENVIAR COMANDOS AL SERVIDOR ---
+
+        function buscarPartida() {
+            const name = document.getElementById("playerName").value || "JugadorX";
+            connection.invoke("FindMatch", name).catch(err => console.error(err));
+        }
+
+        function hacerMovimiento(posicion) {
+            if(!miRoomId) return alert("Aún no estás en una partida");
+            connection.invoke("MakeMove", miRoomId, posicion).catch(err => console.error(err));
+        }
+
+        function loguear(mensaje) {
+            const logElement = document.getElementById("log");
+            logElement.innerText = mensaje + "\n\n" + logElement.innerText;
+        }
+    </script>
+</body>
+</html>
