@@ -1,0 +1,35 @@
+# ==================================
+# Ignorar carpetas de compilación de .NET
+# ==================================
+[Bb]in/
+[Oo]bj/
+
+# ==================================
+# Ignorar configuraciones locales de IDEs
+# ==================================
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# Rider / IntelliJ
+.idea/
+
+# ==================================
+# Ignorar archivos del sistema operativo
+# ==================================
+.DS_Store
+Thumbs.db
+
+# ==================================
+# Entornos de desarrollo locales
+# ==================================
+appsettings.Development.jsons
