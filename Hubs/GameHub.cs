@@ -84,6 +84,25 @@ public class GameHub : Hub
         // Enviamos el tablero actualizado a ambos jugadores
         await Clients.Group(roomId).SendAsync("UpdateBoard", game);
     }
+    // 4. Reiniciar la partida
+    public async Task RestartGame(string roomId)
+    {
+        if (!_gameManager.Games.TryGetValue(roomId, out var game)) return;
+
+        // Solo permitimos reiniciar si la partida actual ya terminó
+        if (!game.IsGameOver) return;
+
+        // Limpiamos el tablero y reseteamos el estado
+        game.Board = new string[9]; 
+        game.IsGameOver = false;
+        game.WinnerConnectionId = string.Empty;
+        
+        // Hacemos que el Jugador 1 empiece esta nueva ronda
+        game.CurrentTurnConnectionId = game.Player1.ConnectionId;
+
+        // Avisamos a ambos jugadores que el juego se ha reiniciado
+        await Clients.Group(roomId).SendAsync("GameRestarted", game);
+    }
 
     // 3. Lógica matemática para ganar o empatar
     private void CheckWinCondition(GameRoom game)

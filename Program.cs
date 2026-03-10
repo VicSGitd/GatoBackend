@@ -20,20 +20,19 @@ builder.Services.AddCors(options =>
             policy.WithOrigins("http://localhost:4200", "http://localhost:5100") // Puertos comunes de Angular y Blazor
                   .AllowAnyHeader()
                   .AllowAnyMethod()
-                  .AllowCredentials(); // Muy importante para SignalR
+                  .AllowCredentials(); 
         });
 });
 
 var app = builder.Build();
 
-// --- 2. CONFIGURACIÓN DEL PIPELINE (Middleware) ---
-// ¡El orden aquí es importante!
+// 2. CONFIGURACIÓN DEL PIPELINE (Middleware)
 
 // Habilitar la lectura de archivos estáticos (como tu index.html en wwwroot)
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-// Aplicar la política de CORS que creamos arriba
+//Política de CORS
 app.UseCors("AllowMyFrontend");
 
 // Mapear la ruta de tu Hub de SignalR

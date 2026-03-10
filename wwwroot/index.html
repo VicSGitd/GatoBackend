@@ -2,69 +2,148 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Prueba de SignalR - Gato</title>
+    <title>Prueba de SignalR - Gato Completo</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
-    <style> body { font-family: sans-serif; padding: 20px; } </style>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        
+        /* Estilos para que parezca un tablero real */
+        #board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px); 
+            gap: 5px;
+            margin-top: 20px;
+            display: none; 
+        }
+        
+        .cell {
+            width: 100px;
+            height: 100px;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            border: 2px solid #ccc;
+        }
+        
+        .cell:hover { background-color: #e0e0e0; }
+    </style>
 </head>
 <body>
-    <h2>Test del Servidor - Gato</h2>
+    <h2>Test del Servidor - Gato Completo</h2>
     
     <input type="text" id="playerName" placeholder="Escribe tu nombre..." />
     <button onclick="buscarPartida()">1. Buscar Partida</button>
-    <button onclick="hacerMovimiento(0)">2. Tirar en posición 0</button>
 
     <h3 id="status" style="color: blue;">Desconectado</h3>
-    <pre id="log" style="background: #eee; padding: 10px;"></pre>
+    <h3 id="turnStatus" style="color: red;"></h3> <div id="board">
+        <button id="btnRestart" onclick="reiniciarPartida()" style="display: none; margin-bottom: 15px; padding: 10px; cursor: pointer;">🔄 Volver a Jugar</button>
+        <button class="cell" onclick="hacerMovimiento(0)" id="cell-0"></button>
+        <button class="cell" onclick="hacerMovimiento(1)" id="cell-1"></button>
+        <button class="cell" onclick="hacerMovimiento(2)" id="cell-2"></button>
+        <button class="cell" onclick="hacerMovimiento(3)" id="cell-3"></button>
+        <button class="cell" onclick="hacerMovimiento(4)" id="cell-4"></button>
+        <button class="cell" onclick="hacerMovimiento(5)" id="cell-5"></button>
+        <button class="cell" onclick="hacerMovimiento(6)" id="cell-6"></button>
+        <button class="cell" onclick="hacerMovimiento(7)" id="cell-7"></button>
+        <button class="cell" onclick="hacerMovimiento(8)" id="cell-8"></button>
+    </div>
+
+    <pre id="log" style="background: #eee; padding: 10px; margin-top: 20px;"></pre>
 
     <script>
-        // Variables globales para la prueba
         let miRoomId = "";
 
-        // Conectar al Hub de SignalR
+        // Conectar al Hub
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/gamehub")
             .build();
 
-        // --- ESCUCHAR EVENTOS DEL SERVIDOR ---
-
+        // --- ESCUCHAR EVENTOS ---
         connection.on("WaitingForOpponent", () => {
             document.getElementById("status").innerText = "Esperando a otro jugador...";
         });
 
         connection.on("GameStarted", (game) => {
             miRoomId = game.roomId;
-            document.getElementById("status").innerText = "¡Juego Iniciado! Sala: " + game.roomId;
-            loguear("Juego iniciado: " + JSON.stringify(game, null, 2));
+            document.getElementById("status").innerText = "¡Juego Iniciado!";
+            document.getElementById("board").style.display = "grid"; // Mostramos el tablero
+            actualizarInterfaz(game);
         });
 
         connection.on("UpdateBoard", (game) => {
-            loguear("Movimiento registrado: " + JSON.stringify(game.board, null, 2));
-            if(game.isGameOver) {
-                document.getElementById("status").innerText = "¡FIN DEL JUEGO! Ganador ID: " + game.winnerConnectionId;
-            }
+            actualizarInterfaz(game);
         });
 
-        // Iniciar conexión
         connection.start()
             .then(() => document.getElementById("status").innerText = "Conectado al servidor")
             .catch(err => console.error(err));
 
-        // --- ENVIAR COMANDOS AL SERVIDOR ---
-
+        // --- ACCIONES ---
         function buscarPartida() {
-            const name = document.getElementById("playerName").value || "JugadorX";
+            const name = document.getElementById("playerName").value || "Jugador";
             connection.invoke("FindMatch", name).catch(err => console.error(err));
         }
 
         function hacerMovimiento(posicion) {
-            if(!miRoomId) return alert("Aún no estás en una partida");
+            if(!miRoomId) return;
+            // Solo mandamos el movimiento al servidor. El servidor decide si es válido.
             connection.invoke("MakeMove", miRoomId, posicion).catch(err => console.error(err));
         }
 
-        function loguear(mensaje) {
-            const logElement = document.getElementById("log");
-            logElement.innerText = mensaje + "\n\n" + logElement.innerText;
+        // --- ACTUALIZAR LA PANTALLA ---
+        function actualizarInterfaz(game) {
+            // 1. Dibujar el tablero recorriendo el arreglo del servidor
+            for(let i = 0; i < 9; i++) {
+                const boton = document.getElementById(`cell-${i}`);
+                boton.innerText = game.board[i] || ""; 
+            }
+
+            // 2. Revisar el estado del juego y los turnos
+            const turnStatus = document.getElementById("turnStatus");
+            
+if (game.isGameOver) {
+                // Mostrar el botón de reiniciar siempre que el juego termine
+                document.getElementById("btnRestart").style.display = "inline-block";
+
+                if (game.winnerConnectionId === "Empate") {
+                    turnStatus.innerText = "¡El juego terminó en EMPATE! Reiniciando...";
+                    turnStatus.style.color = "orange";
+                    
+                    //Si es empate, esperamos 2 segundos y simulamos el clic de reiniciar automáticamente
+                    setTimeout(() => reiniciarPartida(), 2000); 
+                } else {
+                    if (game.winnerConnectionId === connection.connectionId) {
+                        turnStatus.innerText = "¡FELICIDADES, GANASTE!";
+                        turnStatus.style.color = "green";
+                    } else {
+                        turnStatus.innerText = "¡LÁSTIMA, PERDISTE!";
+                        turnStatus.style.color = "red";
+                    }
+                }
+            } else {
+                // ... el resto de tu código original para los turnos ... else {
+                // Si el juego sigue, revisamos de quién es el turno
+                if (game.currentTurnConnectionId === connection.connectionId) {
+                    turnStatus.innerText = "Es tu turno...";
+                    turnStatus.style.color = "green";
+                } else {
+                    turnStatus.innerText = "Esperando al oponente...";
+                    turnStatus.style.color = "red";
+                }
+            }
         }
+        // --- NUEVO: Función para pedir el reinicio ---
+        function reiniciarPartida() {
+            if(!miRoomId) return;
+            connection.invoke("RestartGame", miRoomId).catch(err => console.error(err));
+        }
+
+        // --- NUEVO: Escuchar cuando el servidor reinicia el juego ---
+        connection.on("GameRestarted", (game) => {
+            document.getElementById("btnRestart").style.display = "none"; // Ocultar el botón
+            actualizarInterfaz(game); // Redibujar el tablero vacío
+        });
     </script>
 </body>
 </html>
