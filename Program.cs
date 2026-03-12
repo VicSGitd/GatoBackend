@@ -17,7 +17,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowMyFrontend",
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200", "http://localhost:5100") // Puertos comunes de Angular y Blazor
+            policy.WithOrigins("http://localhost:4200", "http://localhost:5100") // Puertos para angular y blazor
                   .AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials(); 

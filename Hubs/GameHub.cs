@@ -57,31 +57,45 @@ public class GameHub : Hub
     }
 
     // 2. Lógica de movimientos
-    public async Task MakeMove(string roomId, int position)
+public async Task MakeMove(string roomId, int position)
     {
-        // Buscamos la partida
-        if (!_gameManager.Games.TryGetValue(roomId, out var game)) return;
-
-        // Validaciones: que el juego no haya terminado, que la casilla esté vacía y que sea tu turno
-        if (game.IsGameOver || game.Board[position] != null || game.CurrentTurnConnectionId != Context.ConnectionId)
+        if (!_gameManager.Games.TryGetValue(roomId, out var game))
         {
-            return; 
+            Console.WriteLine($"[ERROR] No se encontró la sala: {roomId}");
+            return;
         }
 
-        // Registrar el movimiento
+        if (game.IsGameOver)
+        {
+            Console.WriteLine("[RECHAZADO] El juego ya terminó.");
+            return;
+        }
+
+        if (game.Board[position] != null)
+        {
+            Console.WriteLine($"[RECHAZADO] La casilla {position} ya está ocupada.");
+            return;
+        }
+
+        if (game.CurrentTurnConnectionId != Context.ConnectionId)
+        {
+            Console.WriteLine($"[RECHAZADO] Intento de trampa o error de turno. Turno actual: {game.CurrentTurnConnectionId} | Quien intentó tirar: {Context.ConnectionId}");
+            return;
+        }
+
+        // --- Si pasa todas las validaciones, hace el movimiento normal ---
+        Console.WriteLine($"[ÉXITO] Movimiento válido en posición {position} para la sala {roomId}");
+        
         var isPlayer1 = game.Player1.ConnectionId == Context.ConnectionId;
         game.Board[position] = isPlayer1 ? game.Player1.Symbol : game.Player2.Symbol;
 
-        // Revisar si con este movimiento alguien ganó
         CheckWinCondition(game);
 
         if (!game.IsGameOver)
         {
-            // Si nadie ha ganado, cambiamos el turno
             game.CurrentTurnConnectionId = isPlayer1 ? game.Player2.ConnectionId : game.Player1.ConnectionId;
         }
 
-        // Enviamos el tablero actualizado a ambos jugadores
         await Clients.Group(roomId).SendAsync("UpdateBoard", game);
     }
     // 4. Reiniciar la partida
