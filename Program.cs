@@ -28,7 +28,7 @@ var app = builder.Build();
 
 // 2. CONFIGURACIÓN DEL PIPELINE (Middleware)
 
-// Habilitar la lectura de archivos estáticos (como tu index.html en wwwroot)
+// Habilitar la lectura de archivos estáticos (index.html en wwwroot)
 app.UseDefaultFiles();
 app.UseStaticFiles();
 

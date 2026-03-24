@@ -33,3 +33,8 @@ Thumbs.db
 # Entornos de desarrollo locales
 # ==================================
 appsettings.Development.jsons
+
+log.html
+report.html
+output.xml
+*.png
