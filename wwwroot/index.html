@@ -2,135 +2,71 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Prueba de SignalR - Gato Completo</title>
+    <title>Gato Multijugador - Versión Final</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
     <style>
-        :root {
-            --primary-color: #4A90E2;
-            --bg-color: #f4f7f6;
-            --cell-bg: #ffffff;
-            --text-color: #333333;
-        }
+        body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+        .panel { background: #f9f9f9; padding: 20px; border: 1px solid #ddd; margin-bottom: 20px; border-radius: 8px; }
+        input { padding: 8px; margin: 5px 0; width: 100%; box-sizing: border-box; }
+        button { padding: 10px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; width: 100%; margin-top: 5px; font-weight: bold; }
+        button:hover { background: #0056b3; }
+        .btn-secondary { background: #6c757d; }
+        .btn-secondary:hover { background: #5a6268; }
+        .btn-danger { background: #dc3545; }
+        .btn-danger:hover { background: #c82333; }
+        .btn-success { background: #28a745; }
+        .btn-success:hover { background: #218838; }
+        
+        /* Ocultar la zona de juego al principio */
+        #gameZone { display: none; }
 
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
+        /* Diseño profesional del tablero */
+        #board { display: grid; grid-template-columns: repeat(3, 100px); gap: 5px; margin-top: 20px; justify-content: center; display: none; }
+        
+        .cell { 
+            width: 100px; 
+            height: 100px; 
+            font-size: 50px; 
+            font-family: sans-serif;
+            font-weight: bold; 
+            cursor: pointer; 
+            background-color: #f8f9fa; 
+            border: 2px solid #343a40; 
+            color: #212529; 
+            transition: background-color 0.2s; 
         }
         
-        .game-container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-        }
-
-        h2 { margin-top: 0; color: var(--primary-color); }
-
-        .controls {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            justify-content: center;
-        }
-
-        input[type="text"] {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 16px;
-            outline: none;
-            width: 60%;
-        }
-
-        button {
-            padding: 10px 15px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        button:hover { background-color: #357ABD; }
-
-        .status-area {
-            margin: 15px 0;
-            min-height: 50px; /* Evita que el layout salte */
-        }
-
-        #status { font-weight: normal; margin: 5px 0; font-size: 16px;}
-        #turnStatus { margin: 5px 0; font-size: 18px;}
-
-        /* Estilos del tablero */
-        #board {
-            display: grid;
-            grid-template-columns: repeat(3, 100px); 
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
-            display: none; /* Oculto inicialmente */
-        }
-        
-        .cell {
-            width: 100px;
-            height: 100px;
-            font-size: 48px;
-            font-weight: bold;
-            cursor: pointer;
-            background-color: var(--cell-bg);
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            color: #333;
-            transition: transform 0.1s, background-color 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-        }
-        
-        .cell:hover { 
-            background-color: #f9f9f9; 
-            transform: scale(1.02);
-        }
-
-        #btnRestart {
-            display: none; 
-            margin: 0 auto 15px auto; 
-            background-color: #27ae60;
-            width: 100%;
-        }
-
-        #btnRestart:hover { background-color: #219653; }
+        .cell:hover { background-color: #e2e6ea; }
     </style>
 </head>
 <body>
-
-    <div class="game-container">
-        <h2>🎮 Gato en Línea</h2>
+    <h2 style="text-align: center;">🎮 Gato Multijugador en C#</h2>
+    
+    <div id="loginZone" class="panel">
+        <h3>Inicia Sesión o Regístrate</h3>
+        <input type="text" id="txtUsername" placeholder="Nombre de usuario" />
+        <input type="password" id="txtPassword" placeholder="Contraseña" />
         
-        <div class="controls">
-            <input type="text" id="playerName" placeholder="Tu nombre..." />
-            <button onclick="buscarPartida()">Buscar Partida</button>
-        </div>
+        <button onclick="login()">Iniciar Sesión</button>
+        <button onclick="register()" class="btn-secondary">Registrarse</button>
+        <p id="loginMessage" style="color: red; text-align: center; font-weight: bold;"></p>
+    </div>
 
-        <div class="status-area">
-            <h3 id="status" style="color: gray;">Desconectado</h3>
-            <h3 id="turnStatus"></h3>
-        </div>
+    <div id="gameZone" class="panel">
+        <h3>Bienvenido, <span id="lblUsername" style="color: #007bff;"></span>!</h3>
+        <p style="background: #e9ecef; padding: 10px; border-radius: 5px; text-align: center;">
+            Estadísticas 🏆 -> Ganados: <b id="lblWon" style="color: green;">0</b> | 
+            Perdidos: <b id="lblLost" style="color: red;">0</b> | 
+            Empates: <b id="lblDraws" style="color: orange;">0</b>
+        </p>
+        
+        <button onclick="buscarPartida()" id="btnBuscar">1. Buscar Partida</button>
+        <button onclick="rendirse()" id="btnRendirse" class="btn-danger" style="display: none;">Abandonar Partida</button>
+        <button onclick="reiniciarPartida()" id="btnRestart" class="btn-success" style="display: none;">🔄 Volver a Jugar</button>
+        <button onclick="cerrarSesion()" class="btn-secondary" style="margin-top: 20px;">🚪 Cerrar Sesión</button>
 
-        <button id="btnRestart" onclick="reiniciarPartida()">🔄 Volver a Jugar</button>
+        <h3 id="status" style="color: blue; text-align: center;">Conectando al servidor...</h3>
+        <h3 id="turnStatus" style="color: red; text-align: center; height: 30px;"></h3>
 
         <div id="board">
             <button class="cell" onclick="hacerMovimiento(0)" id="cell-0"></button>
@@ -147,55 +83,119 @@
 
     <script>
         let miRoomId = "";
+        let miUsuario = ""; 
+        let connection = null;
 
-        // Conectar al Hub
-        const connection = new signalR.HubConnectionBuilder()
-            .withUrl("/gamehub")
-            .build();
+        // --- SISTEMA DE AUTENTICACIÓN ---
+        async function register() {
+            const u = document.getElementById("txtUsername").value;
+            const p = document.getElementById("txtPassword").value;
+            
+            if(!u || !p) {
+                mostrarMensajeLogin("Llena todos los campos.", "red");
+                return;
+            }
 
-        // --- ESCUCHAR EVENTOS ---
-        connection.on("WaitingForOpponent", () => {
-            document.getElementById("status").innerText = "Esperando a otro jugador...";
-            document.getElementById("status").style.color = "orange";
-        });
+            const res = await fetch('/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ Username: u, PasswordHash: p }) 
+            });
+            
+            if (res.ok) {
+                mostrarMensajeLogin("¡Registro exitoso! Ahora inicia sesión.", "green");
+            } else {
+                mostrarMensajeLogin("Error: El usuario ya existe o datos inválidos.", "red");
+            }
+        }
 
-        connection.on("GameStarted", (game) => {
-            miRoomId = game.roomId;
-            document.getElementById("status").innerText = "¡Juego Iniciado!";
-            document.getElementById("status").style.color = "blue";
-            document.getElementById("board").style.display = "grid"; // Mostramos el tablero
-            actualizarInterfaz(game);
-        });
+        async function login() {
+            const u = document.getElementById("txtUsername").value;
+            const p = document.getElementById("txtPassword").value;
+            
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ Username: u, PasswordHash: p })
+            });
+            
+            if (res.ok) {
+                const userData = await res.json();
+                miUsuario = userData.username;
+                
+                document.getElementById("loginZone").style.display = "none";
+                document.getElementById("gameZone").style.display = "block";
+                
+                document.getElementById("lblUsername").innerText = userData.username;
+                document.getElementById("lblWon").innerText = userData.gamesWon;
+                document.getElementById("lblLost").innerText = userData.gamesLost;
+                document.getElementById("lblDraws").innerText = userData.draws;
 
-        connection.on("UpdateBoard", (game) => {
-            actualizarInterfaz(game);
-        });
+                iniciarSignalR();
+            } else {
+                mostrarMensajeLogin("Credenciales incorrectas.", "red");
+            }
+        }
 
-        connection.on("GameRestarted", (game) => {
-            document.getElementById("btnRestart").style.display = "none"; // Ocultar el botón
-            actualizarInterfaz(game); // Redibujar el tablero vacío
-        });
+        function cerrarSesion() {
+            if (connection) {
+                connection.stop();
+            }
+            // Limpiamos variables y recargamos la página para volver al login
+            miUsuario = "";
+            miRoomId = "";
+            window.location.reload();
+        }
 
-        connection.start()
-            .then(() => {
-                document.getElementById("status").innerText = "Conectado al servidor";
-                document.getElementById("status").style.color = "green";
-            })
-            .catch(err => {
-                console.error(err);
-                document.getElementById("status").innerText = "Error al conectar";
-                document.getElementById("status").style.color = "red";
+        function mostrarMensajeLogin(texto, color) {
+            const msg = document.getElementById("loginMessage");
+            msg.innerText = texto;
+            msg.style.color = color;
+        }
+
+        // --- SIGNALR (Lógica del Juego) ---
+        function iniciarSignalR() {
+            connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build();
+
+            connection.on("WaitingForOpponent", () => {
+                document.getElementById("status").innerText = "Esperando a otro jugador...";
+                document.getElementById("btnBuscar").disabled = true;
             });
 
-        // --- ACCIONES ---
+            connection.on("GameStarted", (game) => {
+                miRoomId = game.roomId;
+                document.getElementById("status").innerText = "¡Juego Iniciado!";
+                document.getElementById("board").style.display = "grid";
+                document.getElementById("btnRendirse").style.display = "inline-block";
+                document.getElementById("btnBuscar").style.display = "none";
+                actualizarInterfaz(game);
+            });
+
+            connection.on("UpdateBoard", (game) => actualizarInterfaz(game));
+            
+            connection.on("GameRestarted", (game) => {
+                document.getElementById("btnRestart").style.display = "none";
+                actualizarInterfaz(game);
+            });
+
+            connection.on("OpponentLeft", () => {
+                alert("El oponente huyó de la sala. Busca una nueva partida.");
+                limpiarPantalla();
+            });
+
+            connection.start()
+                .then(() => document.getElementById("status").innerText = "Conectado al servidor. Listo para jugar.")
+                .catch(err => console.error(err));
+        }
+
+        // --- ACCIONES DEL JUEGO ---
         function buscarPartida() {
-            const name = document.getElementById("playerName").value || "Jugador";
-            connection.invoke("FindMatch", name).catch(err => console.error(err));
+            limpiarPantalla();
+            connection.invoke("FindMatch", miUsuario).catch(err => console.error(err));
         }
 
         function hacerMovimiento(posicion) {
             if(!miRoomId) return;
-            // Solo mandamos el movimiento al servidor. El servidor decide si es válido.
             connection.invoke("MakeMove", miRoomId, posicion).catch(err => console.error(err));
         }
 
@@ -204,48 +204,71 @@
             connection.invoke("RestartGame", miRoomId).catch(err => console.error(err));
         }
 
-        // --- ACTUALIZAR LA PANTALLA ---
+        function rendirse() {
+            // Simulamos desconexión para forzar la rendición
+            connection.stop().then(() => {
+                document.getElementById("status").innerText = "Te rendiste. Reconectando...";
+                limpiarPantalla();
+                // Sumamos una derrota visualmente
+                document.getElementById("lblLost").innerText = parseInt(document.getElementById("lblLost").innerText) + 1;
+                
+                // Reconectamos para que pueda buscar otra partida
+                setTimeout(() => iniciarSignalR(), 1000);
+            });
+        }
+
+        function limpiarPantalla() {
+            miRoomId = "";
+            document.getElementById("board").style.display = "none";
+            document.getElementById("btnRestart").style.display = "none";
+            document.getElementById("btnRendirse").style.display = "none";
+            document.getElementById("btnBuscar").style.display = "inline-block";
+            document.getElementById("btnBuscar").disabled = false;
+            document.getElementById("turnStatus").innerText = "";
+            document.getElementById("status").innerText = "Listo para jugar.";
+        }
+
         function actualizarInterfaz(game) {
-            // 1. Dibujar el tablero recorriendo el arreglo del servidor
+            // Dibujar tablero y asignar colores
             for(let i = 0; i < 9; i++) {
                 const boton = document.getElementById(`cell-${i}`);
-                boton.innerText = game.board[i] || ""; 
+                const simbolo = game.board[i] || "";
+                boton.innerText = simbolo;
                 
-                // Darle color a las X y O
-                if(game.board[i] === "X") boton.style.color = "#E74C3C"; // Rojo
-                else if(game.board[i] === "O") boton.style.color = "#3498DB"; // Azul
-                else boton.style.color = "#333";
+                if (simbolo === "X") boton.style.color = "#dc3545"; // Rojo
+                else if (simbolo === "O") boton.style.color = "#007bff"; // Azul
+                else boton.style.color = "#212529"; // Oscuro por defecto
             }
 
-            // 2. Revisar el estado del juego y los turnos
             const turnStatus = document.getElementById("turnStatus");
             
-            // LÓGICA CORREGIDA (se eliminó el error de sintaxis)
             if (game.isGameOver) {
-                document.getElementById("btnRestart").style.display = "block";
+                document.getElementById("btnRestart").style.display = "inline-block";
+                document.getElementById("btnRendirse").style.display = "none";
 
+                // Actualizar estadísticas visuales (la base de datos ya se actualizó en el backend)
                 if (game.winnerConnectionId === "Empate") {
-                    turnStatus.innerText = "¡Empate! Reiniciando...";
+                    turnStatus.innerText = "¡EMPATE!"; 
                     turnStatus.style.color = "orange";
-                    setTimeout(() => reiniciarPartida(), 2000); 
+                    document.getElementById("lblDraws").innerText = parseInt(document.getElementById("lblDraws").innerText) + 1;
                 } else {
                     if (game.winnerConnectionId === connection.connectionId) {
-                        turnStatus.innerText = "¡FELICIDADES, GANASTE! 🎉";
-                        turnStatus.style.color = "#27ae60"; // Verde
+                        turnStatus.innerText = "¡GANASTE!"; 
+                        turnStatus.style.color = "green";
+                        document.getElementById("lblWon").innerText = parseInt(document.getElementById("lblWon").innerText) + 1;
                     } else {
-                        turnStatus.innerText = "¡LÁSTIMA, PERDISTE! 😢";
-                        turnStatus.style.color = "#e74c3c"; // Rojo
+                        turnStatus.innerText = "¡PERDISTE!"; 
+                        turnStatus.style.color = "red";
+                        document.getElementById("lblLost").innerText = parseInt(document.getElementById("lblLost").innerText) + 1;
                     }
                 }
             } else {
-                document.getElementById("btnRestart").style.display = "none";
-                
                 if (game.currentTurnConnectionId === connection.connectionId) {
-                    turnStatus.innerText = "Es tu turno...";
-                    turnStatus.style.color = "#27ae60"; // Verde
+                    turnStatus.innerText = "Es tu turno..."; 
+                    turnStatus.style.color = "green";
                 } else {
-                    turnStatus.innerText = "Esperando al oponente...";
-                    turnStatus.style.color = "orange";
+                    turnStatus.innerText = "Esperando al oponente..."; 
+                    turnStatus.style.color = "red";
                 }
             }
         }
