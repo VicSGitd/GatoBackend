@@ -81,8 +81,66 @@ Partida completa entre los dos botcitos
     Switch Browser    Jugador2
     Wait Until Element Contains    id=turnStatus    ¡PERDISTE!    timeout=5s
     
-    Sleep    10s
-    # Close All Browsers
+    Sleep    5s
+
+    #-------------------------------------
+    # Pruebita de Empate
+    #-------------------------------------
+    
+    # Michi1 decide pedir la revancha para el empate
+    Switch Browser    Jugador1
+    Click Element     id=btnRestart
+    
+    # Verificamos que el tablero se limpió
+    Wait Until Element Contains    id=status    ¡Juego Iniciado!    timeout=5s
+    
+    Switch Browser    Jugador2
+    Wait Until Element Contains    id=status    ¡Juego Iniciado!    timeout=5s
+    
+    # Movimientos para lograr empate
+    Switch Browser    Jugador1
+    Wait Until Element Contains    id=turnStatus    Es tu turno...    timeout=10s
+    Click Element     id=cell-4
+    
+    Switch Browser    Jugador2
+    Wait Until Element Contains    id=turnStatus    Es tu turno...    timeout=10s
+    Click Element     id=cell-0
+    
+    Switch Browser    Jugador1
+    Wait Until Element Contains    id=turnStatus    Es tu turno...    timeout=10s
+    Click Element     id=cell-1
+    
+    Switch Browser    Jugador2
+    Wait Until Element Contains    id=turnStatus    Es tu turno...    timeout=10s
+    Click Element     id=cell-7
+    
+    Switch Browser    Jugador1
+    Wait Until Element Contains    id=turnStatus    Es tu turno...    timeout=10s
+    Click Element     id=cell-6
+    
+    Switch Browser    Jugador2
+    Wait Until Element Contains    id=turnStatus    Es tu turno...    timeout=10s
+    Click Element     id=cell-2
+    
+    Switch Browser    Jugador1
+    Wait Until Element Contains    id=turnStatus    Es tu turno...    timeout=10s
+    Click Element     id=cell-5
+    
+    Switch Browser    Jugador2
+    Wait Until Element Contains    id=turnStatus    Es tu turno...    timeout=10s
+    Click Element     id=cell-3
+    
+    Switch Browser    Jugador1
+    Wait Until Element Contains    id=turnStatus    Es tu turno...    timeout=10s
+    Click Element     id=cell-8
+    
+    # Checamos el empate
+    Wait Until Element Contains    id=turnStatus    ¡EMPATE!    timeout=5s
+    
+    Switch Browser    Jugador2
+    Wait Until Element Contains    id=turnStatus    ¡EMPATE!    timeout=5s
+    
+    Sleep    5s
 
     #-------------------------------------
     # Pruebita de ganar por cobardía

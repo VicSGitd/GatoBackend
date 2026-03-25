@@ -66,6 +66,7 @@
         <button onclick="cerrarSesion()" class="btn-secondary" style="margin-top: 20px;">🚪 Cerrar Sesión</button>
 
         <h3 id="status" style="color: blue; text-align: center;">Conectando al servidor...</h3>
+        <h4 id="opponentName" style="color: darkmagenta; text-align: center; display: none;"></h4>
         <h3 id="turnStatus" style="color: red; text-align: center; height: 30px;"></h3>
 
         <div id="board">
@@ -165,6 +166,13 @@
             connection.on("GameStarted", (game) => {
                 miRoomId = game.roomId;
                 document.getElementById("status").innerText = "¡Juego Iniciado!";
+                
+                let isPlayer1 = game.player1.connectionId === connection.connectionId;
+                let opponentName = isPlayer1 ? game.player2.name : game.player1.name;
+                let oponenteLbl = document.getElementById("opponentName");
+                oponenteLbl.innerText = "⚔️ Enfrentando a: " + opponentName;
+                oponenteLbl.style.display = "block";
+
                 document.getElementById("board").style.display = "grid";
                 document.getElementById("btnRendirse").style.display = "inline-block";
                 document.getElementById("btnBuscar").style.display = "none";
@@ -226,6 +234,7 @@
             document.getElementById("btnBuscar").disabled = false;
             document.getElementById("turnStatus").innerText = "";
             document.getElementById("status").innerText = "Listo para jugar.";
+            document.getElementById("opponentName").style.display = "none";
         }
 
         function actualizarInterfaz(game) {
