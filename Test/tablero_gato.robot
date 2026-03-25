@@ -18,7 +18,7 @@ Iniciar Sesion
 
 *** Test Cases ***
 Partida completa entre los dos botcitos
-    [Documentation]    Dos jugadores inician sesión, buscan partida y juegan.
+    [Documentation]    Los dos michis inician sesión, buscan partida y juegan.
     
    
     # Pausa
@@ -82,4 +82,42 @@ Partida completa entre los dos botcitos
     Wait Until Element Contains    id=turnStatus    ¡PERDISTE!    timeout=5s
     
     Sleep    10s
+    # Close All Browsers
+
+    #-------------------------------------
+    # Pruebita de ganar por cobardía
+    #-------------------------------------
+    
+    # Michi1 decide pedir la revancha
+    Switch Browser    Jugador1
+    Click Element     id=btnRestart
+    
+    # Verificamos que el tablero se limpió para Michi1
+    Wait Until Element Contains    id=status    ¡Juego Iniciado!    timeout=5s
+    
+    # Verificamos que el tablero se limpió para Michi2
+    Switch Browser    Jugador2
+    Wait Until Element Contains    id=status    ¡Juego Iniciado!    timeout=5s
+    
+    # Esperamos respuesta
+    Sleep    10s
+    
+    # Michi2 abandona
+    Close Window
+    
+
+    # Ganando por cobardía
+   
+    
+    # Regresamos a la pantalla de Michi1
+    Switch Browser    Jugador1
+    
+    # Detectamos el abandono
+    Handle Alert    action=ACCEPT    timeout=5s
+    
+    # Verificamos que el sistema protegió a Michi1 y lo regresó al lobby sano y salvo
+    Wait Until Element Contains    id=status    Listo para jugar.    timeout=5s
+    
+    # Pausa final y cerramos lo que quede abierto
+    Sleep    3s
     Close All Browsers
