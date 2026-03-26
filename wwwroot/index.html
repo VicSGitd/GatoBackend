@@ -85,6 +85,7 @@
     <script>
         let miRoomId = "";
         let miUsuario = ""; 
+        let miToken = "";
         let connection = null;
 
         // --- SISTEMA DE AUTENTICACIÓN ---
@@ -123,6 +124,7 @@
             if (res.ok) {
                 const userData = await res.json();
                 miUsuario = userData.username;
+                miToken = userData.token;
                 
                 document.getElementById("loginZone").style.display = "none";
                 document.getElementById("gameZone").style.display = "block";
@@ -144,6 +146,7 @@
             }
             // Limpiamos variables y recargamos la página para volver al login
             miUsuario = "";
+            miToken = "";
             miRoomId = "";
             window.location.reload();
         }
@@ -156,7 +159,9 @@
 
         // --- SIGNALR (Lógica del Juego) ---
         function iniciarSignalR() {
-            connection = new signalR.HubConnectionBuilder().withUrl("/gamehub").build();
+            connection = new signalR.HubConnectionBuilder()
+                .withUrl("/gamehub", { accessTokenFactory: () => miToken })
+                .build();
 
             connection.on("WaitingForOpponent", () => {
                 document.getElementById("status").innerText = "Esperando a otro jugador...";

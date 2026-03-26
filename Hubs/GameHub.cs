@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using GatoBackend.Models;
 using GatoBackend.Services;
 using GatoBackend.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GatoBackend.Hubs;
 
+[Authorize]
 public class GameHub : Hub
 {
     private readonly GameManager _gameManager;
